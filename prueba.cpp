@@ -14,16 +14,57 @@ struct Nodo{
 
 //Para TDA Grafo
 class TDAGrafo {
-private:
-    int numNodos;
+    private:
+        int** ListaVecinoAdyacente; //Matriz dinámica
+        int* cantidadAdy; //Cantidad vecinos nodo correspondiente
+        int TotalNodos;
+        int* conductores;
+        int cantidadConductores;
 
-public:
+    public:
+        //Constructor
+        TDAGrafo(int cantidadNodos) {
+        TotalNodos = cantidadNodos;
+        conductores = nullptr; 
 
-    int cantidadNodos() const {
-        return numNodos;
+        ListaVecinoAdyacente = new int*[TotalNodos + 1];
+        cantidadAdy = new int[TotalNodos + 1];
+
+        for (int i = 0; i <= TotalNodos; ++i) {
+            ListaVecinoAdyacente[i] = new int[TotalNodos + 1];
+            cantidadAdy[i] = 0;
+        }
     }
-};
 
+    //Agrega un arco entre dos nodos
+    void agregarArco(int origen, int destino) {
+        ListaVecinoAdyacente[origen][cantidadAdy[origen]] = destino; //Guarda un vecino en la lista de vecinos del nodo
+        cantidadAdy[origen]++;
+    } 
+    
+    void setConductores(int* lista, int cant) {
+        cantidadConductores = cant;
+        conductores = new int[cant];
+        for (int i = 0; i < cant; ++i) {
+            conductores[i] = lista[i];
+        }
+    }
+    
+    //Destructor para liberar memoria
+    //Dentro de la clase porque se llama nueva memoria desde aqui tb
+    ~TDAGrafo() {
+        for (int i = 0; i <= TotalNodos; ++i) {
+            delete[] ListaVecinoAdyacente[i];
+        }
+        delete[] ListaVecinoAdyacente;
+        delete[] cantidadAdy;
+        if (conductores != nullptr) {
+            delete[] conductores; 
+        }
+    
+    }
+
+};
 
 
 
@@ -43,22 +84,14 @@ int main() {
     cout<< "Conductores: " << cantidadConductores << endl;
 
 
-    // Crear matriz dinámica para adyacencia
-    int** ListaVecinoAdyacente = new int*[cantidadNodos + 1]; //Como los nodos parten del 1 le sumamos uno para quedar con indices directos [1,40], sino seria [1,39].
-    int* cantidadAdy = new int[cantidadNodos + 1]; //Arreglo para guardar, para cada nodo, la cantidad de vecinos adyacentes que tiene. 
-    for (int i = 0; i <= cantidadNodos; ++i) {
-        ListaVecinoAdyacente[i] = new int[cantidadNodos + 1];  // Máximo vecinos igual a nodos
-        cantidadAdy[i] = 0;
-    }
+    //Crear grafo usando el TDA
+    TDAGrafo grafo(cantidadNodos);
 
-    // Leer los arcos y llenar la lista de vecinos de cada nodo
+    //Leer los arcos y agregarlos al grafo
     for (int i = 0; i < cantidadArcos; ++i) {
         int origen, destino;
         archivo >> origen >> destino;
-
-        //Pone el nuevo vecino (el destino) en la siguiente posición disponible de la lista de vecinos de origen.
-        ListaVecinoAdyacente[origen][cantidadAdy[origen]] = destino;
-        cantidadAdy[origen]++; //Aumenta la cantidad de nodos adyacentes
+        grafo.agregarArco(origen, destino);
     }
 
     // Leer conductores
@@ -67,8 +100,14 @@ int main() {
         archivo >> PosConductores[i];
     }
 
+    grafo.setConductores(PosConductores, cantidadConductores);
+
+
     //BORRAR LUEGO
+    // Mostrar el grafo
+    //grafo.mostrar();
     
+
     /*
     // Mostrar la matriz de adyacencia (listas)
     for (int i = 1; i <= cantidadNodos; ++i) {
@@ -88,11 +127,6 @@ int main() {
     */
 
     // Liberar memoria dinámica
-    for (int i = 0; i <= cantidadNodos; ++i) {
-        delete[] ListaVecinoAdyacente[i];
-    }
-    delete[] ListaVecinoAdyacente;
-    delete[] cantidadAdy;
     delete[] PosConductores;
 
     return 0;
