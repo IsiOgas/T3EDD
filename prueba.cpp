@@ -130,35 +130,35 @@ void mostrarCamino(int destino, int* padre, int totalNodos) {
 
 
 void solicitarUber(TDAGrafo& grafo, int pasajero, int destino) {
-    int cantidadNodos = grafo.getCantidadNodos();
-    int cantidadConductores= grafo.getCantidadConductores();
+    int cantidadNodos = grafo.getCantidadNodos(); // O(1)
+    int cantidadConductores= grafo.getCantidadConductores(); //O(1)
     cout << "Pasajero nodo: " << pasajero << " | Destino nodo: " << destino << endl;
-    int mejor = -1;
-    int menorDist = 1e9;
-    for (int i = 0; i < cantidadConductores; ++i) {
+    int mejor = -1; //O(1)
+    int menorDist = 1e9; //O(1)
+    for (int i = 0; i < cantidadConductores; ++i) { 
         int posConductor = grafo.getConductor(i);
-        int* DisDesdeConductor = new int [cantidadNodos + 1];
-        int* CaminoConductor = new int [cantidadNodos + 1];
-        grafo.BFS(posConductor, DisDesdeConductor, CaminoConductor);
+        int* DisDesdeConductor = new int [cantidadNodos + 1]; //O(n)
+        int* CaminoConductor = new int [cantidadNodos + 1]; //O(n)
+        grafo.BFS(posConductor, DisDesdeConductor, CaminoConductor); // O(n^2)
 
         if(DisDesdeConductor[pasajero] != NOVISITADO && DisDesdeConductor[pasajero] < menorDist){
             mejor = i;
             menorDist = DisDesdeConductor[pasajero];
-        }
-        delete[] DisDesdeConductor;
-        delete[] CaminoConductor;  
-    }
+        } // tdo ese if es O(1)
+        delete[] DisDesdeConductor; //O(1)
+        delete[] CaminoConductor; //O(1) 
+    } 
     if (mejor == -1){
         cout << "No hay conductor disponible para llegar al pasajero." << endl;
         cout << "Ruta : {} - Costo : -1" << endl;
         return;
-    }
+    } // todo ese if es //O(1)
 
-    int posConductor = grafo.getConductor(mejor);
+    int posConductor = grafo.getConductor(mejor); //O(1)
     // BFS desde el conductor al pasajero.
-    int* distConductor = new int[cantidadNodos + 1];
-    int* padreConductor = new int[cantidadNodos + 1];
-    grafo.BFS(posConductor, distConductor, padreConductor);
+    int* distConductor = new int[cantidadNodos + 1]; //O(n)
+    int* padreConductor = new int[cantidadNodos + 1]; //O(n)
+    grafo.BFS(posConductor, distConductor, padreConductor); //O(n^2)
     if (distConductor[pasajero] == NOVISITADO) {
         cout << "Conductor no puede llegar al pasajero." << endl;
         cout << "Ruta : {} - Costo : -1" << endl;
@@ -167,9 +167,9 @@ void solicitarUber(TDAGrafo& grafo, int pasajero, int destino) {
         return;
     }
     // BFS desde el pasajero al destino.
-    int* distPasajero = new int [cantidadNodos + 1];
-    int* padrePasajero = new int[cantidadNodos + 1];
-    grafo.BFS(pasajero, distPasajero, padrePasajero);
+    int* distPasajero = new int [cantidadNodos + 1]; //O(1)
+    int* padrePasajero = new int[cantidadNodos + 1]; //O(1)
+    grafo.BFS(pasajero, distPasajero, padrePasajero); //O(n^2)
 
     //Si no hay un camino desde el pasajero al destino
     if(distPasajero[destino] == NOVISITADO){
