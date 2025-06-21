@@ -6,15 +6,11 @@ using namespace std;
 #define NOVISITADO -1
 
 
-
 //Para TDA
 struct Nodo{
     int destino;
     Nodo *sig;
 };
-
-
-
 
 //Para TDA Grafo
 class TDAGrafo {
@@ -57,7 +53,7 @@ class TDAGrafo {
     int getCantidadConductores() const { return cantidadConductores; }
     int getConductor(int i) const { return conductores[i]; }
     void setConductor(int i, int nodo) { conductores[i] = nodo; }
-    
+
     void BFS(int inicio, int* distancia, int* padre) {
         //Distancia: cuantos pasos hay desde incio hasta el nodo[i]
         //Padre: desde que nodo se llego a nodo[i]
@@ -101,17 +97,14 @@ class TDAGrafo {
         if (conductores != nullptr) {
             delete[] conductores; 
         }
-    
     }
-    
-
 };
+
 
 void mostrarCamino(int destino, int* padre, int totalNodos) {
     int* camino = new int[totalNodos + 1];
     int longitud = 0;
     int actual = destino;
-
     // Construir camino desde destino hacia el origen
     while (actual != NOVISITADO && longitud <= totalNodos) {
         camino[longitud++] = actual;
@@ -139,56 +132,74 @@ void mostrarCamino(int destino, int* padre, int totalNodos) {
 void solicitarUber(TDAGrafo& grafo, int pasajero, int destino) {
     int cantidadNodos = grafo.getCantidadNodos();
     int cantidadConductores= grafo.getCantidadConductores();
-
-    int* distanciaPasajero = new int[cantidadNodos + 1]; //Distancia desde el pasajero a todos los nodos
-    int* padrePasajero = new int[cantidadNodos + 1]; //Camino desde el pasajero
-    grafo.BFS(pasajero, distanciaPasajero, padrePasajero);
-
+    cout << "Pasajero nodo: " << pasajero << " | Destino nodo: " << destino << endl;
     int mejor = -1;
     int menorDist = 1e9;
     for (int i = 0; i < cantidadConductores; ++i) {
         int posConductor = grafo.getConductor(i);
-        if (distanciaPasajero[posConductor] != NOVISITADO && distanciaPasajero[posConductor] < menorDist) {
-            mejor = i; //indice del conductor en el arreglo
-            menorDist = distanciaPasajero[posConductor]; // Distamcia más corta encontrada
+        int* DisDesdeConductor = new int [cantidadNodos + 1];
+        int* CaminoConductor = new int [cantidadNodos + 1];
+        grafo.BFS(posConductor, DisDesdeConductor, CaminoConductor);
+
+        if(DisDesdeConductor[pasajero] != NOVISITADO && DisDesdeConductor[pasajero] < menorDist){
+            mejor = i;
+            menorDist = DisDesdeConductor[pasajero];
         }
+        delete[] DisDesdeConductor;
+        delete[] CaminoConductor;  
     }
-    //Si no se encuentra ningun conductor disponible
-    if (mejor == -1 || distanciaPasajero[destino] == NOVISITADO){
+    if (mejor == -1){
+        cout << "No hay conductor disponible para llegar al pasajero." << endl;
         cout << "Ruta : {} - Costo : -1" << endl;
-        delete[] distanciaPasajero;
+        return;
+    }
+
+    int posConductor = grafo.getConductor(mejor);
+    // BFS desde el conductor al pasajero.
+    int* distConductor = new int[cantidadNodos + 1];
+    int* padreConductor = new int[cantidadNodos + 1];
+    grafo.BFS(posConductor, distConductor, padreConductor);
+    if (distConductor[pasajero] == NOVISITADO) {
+        cout << "Conductor no puede llegar al pasajero." << endl;
+        cout << "Ruta : {} - Costo : -1" << endl;
+        delete[] distConductor;
+        delete[] padreConductor;
+        return;
+    }
+    // BFS desde el pasajero al destino.
+    int* distPasajero = new int [cantidadNodos + 1];
+    int* padrePasajero = new int[cantidadNodos + 1];
+    grafo.BFS(pasajero, distPasajero, padrePasajero);
+
+    //Si no hay un camino desde el pasajero al destino
+    if(distPasajero[destino] == NOVISITADO){
+         cout << "No hay ruta del pasajero al destino." << endl;
+        cout << "Ruta : {} - Costo : -1" << endl;
+        delete[] distConductor;
+        delete[] padreConductor;
+        delete[] distPasajero;
         delete[] padrePasajero;
         return;
     }
 
-
-    int posConductor = grafo.getConductor(mejor);
-    
-    int* distConductor = new int[cantidadNodos + 1];
-    int* padreConductor = new int[cantidadNodos + 1];
-    grafo.BFS(posConductor, distConductor, padreConductor);
-
-    
-
-
     cout << "Ruta : ";
     mostrarCamino(destino, padrePasajero, cantidadNodos);
     cout << " - ";
+    //Mostramos las distancias.
     cout << "Pasos conductor -> pasajero: " << distConductor[pasajero] << endl;
-    cout << "Pasos pasajero -> destino: " << distanciaPasajero[destino] << endl;
-
-    int costo = 300 * distConductor[pasajero] + 500 * distanciaPasajero[destino];
+    cout << "Pasos pasajero -> destino: " << distPasajero[destino] << endl;
+    //Calculamos el costo total.
+    int costo = 300 * distConductor[pasajero] + 500 * distPasajero[destino];
     cout << "Costo total del viaje: " << costo << endl;
 
     // Actualizar posición del conductor
     grafo.setConductor(mejor, destino);
 
-    delete[] distanciaPasajero;
+    delete[] distPasajero;
     delete[] padrePasajero;
     delete[] distConductor;
     delete[] padreConductor;
 }
-
 
 
 int main() {
@@ -197,6 +208,7 @@ int main() {
         cerr << "Error: No se pudo abrir el archivo." << endl;
         return 1;
     }
+
     int cantidadNodos;
     int cantidadArcos; 
     int cantidadConductores;
@@ -205,7 +217,6 @@ int main() {
     cout<< "Nodos: " << cantidadNodos <<endl;
     cout<< "Arcos: "<< cantidadArcos << endl;
     cout<< "Conductores: " << cantidadConductores << endl;
-
 
     //Crear grafo usando el TDA
     TDAGrafo grafo(cantidadNodos);
