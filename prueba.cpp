@@ -44,10 +44,10 @@ int main() {
 
 
     // Crear matriz dinámica para adyacencia
-    int** VecinoAdyacente = new int*[cantidadNodos + 1]; //Como los nodos parten del 1 le sumamos uno para quedar con indices directos [1,40], sino seria [1,39].
+    int** ListaVecinoAdyacente = new int*[cantidadNodos + 1]; //Como los nodos parten del 1 le sumamos uno para quedar con indices directos [1,40], sino seria [1,39].
     int* cantidadAdy = new int[cantidadNodos + 1]; //Arreglo para guardar, para cada nodo, la cantidad de vecinos adyacentes que tiene. 
     for (int i = 0; i <= cantidadNodos; ++i) {
-        VecinoAdyacente[i] = new int[cantidadNodos + 1];  // Máximo vecinos igual a nodos
+        ListaVecinoAdyacente[i] = new int[cantidadNodos + 1];  // Máximo vecinos igual a nodos
         cantidadAdy[i] = 0;
     }
 
@@ -57,7 +57,7 @@ int main() {
         archivo >> origen >> destino;
 
         //Pone el nuevo vecino (el destino) en la siguiente posición disponible de la lista de vecinos de origen.
-        VecinoAdyacente[origen][cantidadAdy[origen]] = destino;
+        ListaVecinoAdyacente[origen][cantidadAdy[origen]] = destino;
         cantidadAdy[origen]++; //Aumenta la cantidad de nodos adyacentes
     }
 
@@ -68,12 +68,13 @@ int main() {
     }
 
     //BORRAR LUEGO
-    /* 
+    
+    /*
     // Mostrar la matriz de adyacencia (listas)
     for (int i = 1; i <= cantidadNodos; ++i) {
         cout << "Nodo " << i << " conectado con: ";
         for (int j = 0; j < cantidadAdy[i]; ++j) {
-            cout << adyacencia[i][j] << " ";
+            cout << ListaVecinoAdyacente[i][j] << " ";
         }
         cout << "\n";
     }
@@ -81,16 +82,16 @@ int main() {
     // Mostrar conductores
     cout << "Conductores en nodos: ";
     for (int i = 0; i < cantidadConductores; ++i) {
-        cout << conductores[i] << " ";
+        cout << PosConductores[i] << " ";
     }
     cout << endl;
     */
 
     // Liberar memoria dinámica
     for (int i = 0; i <= cantidadNodos; ++i) {
-        delete[] VecinoAdyacente[i];
+        delete[] ListaVecinoAdyacente[i];
     }
-    delete[] VecinoAdyacente;
+    delete[] ListaVecinoAdyacente;
     delete[] cantidadAdy;
     delete[] PosConductores;
 
