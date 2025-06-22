@@ -17,13 +17,13 @@ Complejidad: O(1).
 -Búsqueda mejor conductor:
 Se realiza un ciclo for que se repite c veces, donde c es la cantidadConductores. 
 Dentro de este ciclo se crean dos arreglos de tamaño n. Complejidad: O(n)
-Se realiza un BFS desde la pos actual del conductor hacia el pasajero.  Complejidad: O(n + a).
+Se realiza un BFS desde la posición actual del conductor hacia el pasajero.  Complejidad: O(n + a).
 Seguido se verifica si no hay conductor (O(1)) y se eliminan los arreglos (O(1)). Complejidad: O(1).
 Complejidad del bloque: O(c*(O(n) + O(n + a) + O(1) + O(1))) = O(c*(n + a)). 
 
--Verifiacion y pos conductor:
-Se realiza una comparación simple de si se encontro un conductor. Complejidad: O(1).
-Se obtiene la pos del conductor más cercano. Complejidad: O(1).
+-Verificación y posición conductor:
+Se realiza una comparación simple de si se encontró un conductor. Complejidad: O(1).
+Se obtiene la posición del conductor más cercano. Complejidad: O(1).
 Complejidad del bloque: O(1) + O(1) = O(1).
 
 -BFS desde el conductor al pasajero. 
@@ -41,10 +41,10 @@ Complejidad del bloque: O(n) + O(n + a) +  O(1) + O(1) =  O(n + a)
 
 -Mostrar ruta y costo:
 Se imprime por pantalla el camino desde el pasajero al destino mediante la función void mostrarCamino lo cual toma a lo más O(n).
-Luego el costo del viaje, mostrar el resultado, actualizar la pos del conductor al destino y eliminar memoria, todas toman tiempo constante. O(1) x 5.
+Luego el costo del viaje, mostrar el resultado, actualizar la posición del conductor al destino y eliminar memoria, todas toman tiempo constante. O(1) x 5.
 Complejidad del bloque: O(n) + O(1) x 5 = O(n).
 
 Finalmente al sumar se obtiene:
 Complejidad total: O(c*(n + a)) +  O(n + a) + O(n + a) + O(n) + O(1) = O(c *(n + a)).
 
-Obs: Las operaciones de inicialización de variables, verifiacion y eliminacion de memoria son constantes, por lo que no afectan la complejidad.
+Obs: Las operaciones de inicialización de variables, verificación y eliminación de memoria son constantes, por lo que no afectan la complejidad.
