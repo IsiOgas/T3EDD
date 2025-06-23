@@ -2,7 +2,7 @@
 #include <fstream>
 using namespace std;
 
-#define NOMBRE_ARCHIVO "data2.txt"
+#define NOMBRE_ARCHIVO "data1.txt"
 #define NOVISITADO -1
 
 //Para TDA.
@@ -328,9 +328,15 @@ int main() {
             break;
         }
 
+        // creamos este if por si el usario pregunta un nodo fuera del alcance de nuestro grafo.
+        int maxnodo = grafo.getCantidadNodos();
+        if (desde < 1 || desde > maxnodo || hasta < 1 || hasta > maxnodo) {
+            cout << "Ruta : {} - Costo : -1" << endl;
+            continue;
+        }
+
         solicitarUber(grafo, desde, hasta);
     }
-
     // Liberar memoria dinámica.
     delete[] PosConductores;
 
