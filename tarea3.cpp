@@ -2,7 +2,7 @@
 #include <fstream>
 using namespace std;
 
-#define  NOMBRE_ARCHIVO "data2.txt"
+#define NOMBRE_ARCHIVO "data2.txt"
 #define NOVISITADO -1
 
 //Para TDA.
