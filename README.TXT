@@ -4,7 +4,6 @@ Rol: 202473654-K
 Nombre: Matilde Vásquez
 Rol: 202473652-3
 
-
 Análisis de Complejidad de solicitar_uber
 n: cantidad nodos.
 a: cantidad aristas (conexiones).
@@ -48,3 +47,10 @@ Finalmente al sumar se obtiene:
 Complejidad total: O(c*(n + a)) +  O(n + a) + O(n + a) + O(n) + O(1) = O(c *(n + a)).
 
 Obs: Las operaciones de inicialización de variables, verificación y eliminación de memoria son constantes, por lo que no afectan la complejidad.
+
+
+Grafo Data 2
+La imagen abarca una zona demilitada (lineas amarillas) de la ciudad de Nueva York.
+Los arcos bidimensionales son de color azul, mientras que los arcos dirigidos son de color rojo con una flecha.
+Inicialmente, hay un conductor en cada nodo verde.
+En el archivo data2.txt la primera linea indica la cantidad de nodos, la cantidad de arcos y la cantidad de conductores.

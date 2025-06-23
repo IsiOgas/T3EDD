@@ -2,7 +2,7 @@
 #include <fstream>
 using namespace std;
 
-#define  NOMBRE_ARCHIVO "data1.txt"
+#define  NOMBRE_ARCHIVO "data2.txt"
 #define NOVISITADO -1
 
 //Para TDA.
@@ -272,7 +272,6 @@ void solicitarUber(TDAGrafo& grafo, int pasajero, int destino) {
     // Actualizar posición del conductor.
     grafo.setConductor(mejor, destino); //O(1).
 
-
     //Todos O(1) x 4.
     delete[] distPasajero; 
     delete[] padrePasajero;
@@ -314,30 +313,23 @@ int main() {
     int desde; 
     int hasta;
     while (true) {
-        cout << "Ingrese viaje : ";
+        cout <<"Ingrese viaje: ";
         cin >> desde >> hasta;
-        if (desde == -1 && hasta == -1) break;
+
+        // Verificar si hubo error al ingresar (por ejemplo, letras)
+        if (cin.fail()) {
+            cout << "Opción Inválida: Ingrese solo números." << endl;
+            cin.clear(); // Limpia el estado de error
+            cin.ignore(1000, '\n'); // Ignora lo que quedó en el buffer
+            continue; // Vuelve a pedir los datos
+        }
+
+        if (desde == -1 && hasta == -1){
+            break;
+        }
 
         solicitarUber(grafo, desde, hasta);
     }
-
-    /*
-    // Mostrar la matriz de adyacencia (listas)
-    for (int i = 1; i <= cantidadNodos; ++i) {
-        cout << "Nodo " << i << " conectado con: ";
-        for (int j = 0; j < cantidadAdy[i]; ++j) {
-            cout << ListaVecinoAdyacente[i][j] << " ";
-        }
-        cout << "\n";
-    }
-
-    // Mostrar conductores
-    cout << "Conductores en nodos: ";
-    for (int i = 0; i < cantidadConductores; ++i) {
-        cout << PosConductores[i] << " ";
-    }
-    cout << endl;
-    */
 
     // Liberar memoria dinámica.
     delete[] PosConductores;
