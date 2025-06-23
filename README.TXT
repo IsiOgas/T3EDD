@@ -47,7 +47,6 @@ Se realiza un BFS. Complejidad: O(n + a).
 Seguido se verifica si hay un camino del pasajero al destino (O(1)) y se eliminan los arreglos (O(1)). Complejidad: O(1).
 Complejidad del bloque: O(n) + O(n + a) +  O(1) + O(1) =  O(n + a) 
 
-
 -Mostrar ruta y costo:
 Se imprime por pantalla el camino desde el pasajero al destino mediante la función void mostrarCamino lo cual toma a lo más O(n).
 Luego el costo del viaje, mostrar el resultado, actualizar la posición del conductor al destino y eliminar memoria, todas toman tiempo constante. O(1) x 5.
