@@ -4,8 +4,8 @@ Rol: 202473654-K
 Nombre: Matilde Vásquez
 Rol: 202473652-3
 
-Al inicio de tarea3.cpp inicialmente está el macro #define NOMBRE_ARCHIVO "data2.txt". 
-Cambiar "data2.txt" por el archivo que se quiera leer.
+Al inicio de tarea3.cpp inicialmente está el macro #define NOMBRE_ARCHIVO "data1.txt". 
+Cambiar "data1.txt" por el archivo que se quiera leer.
 
 Grafo Data 2
 La imagen abarca una zona delimitada (líneas amarillas) de la ciudad de Nueva York.
